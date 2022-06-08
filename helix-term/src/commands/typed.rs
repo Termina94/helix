@@ -15,9 +15,11 @@ pub struct TypableCommand {
 
 fn quit(
     cx: &mut compositor::Context,
-    _args: &[Cow<str>],
+    args: &[Cow<str>],
     _event: PromptEvent,
 ) -> anyhow::Result<()> {
+    ensure!(args.is_empty(), ":quit takes no arguments");
+
     // last view and we have unsaved changes
     if cx.editor.tree.views().count() == 1 {
         buffers_remaining_impl(cx.editor)?
@@ -30,9 +32,11 @@ fn quit(
 
 fn force_quit(
     cx: &mut compositor::Context,
-    _args: &[Cow<str>],
+    args: &[Cow<str>],
     _event: PromptEvent,
 ) -> anyhow::Result<()> {
+    ensure!(args.is_empty(), ":quit! takes no arguments");
+
     cx.editor.close(view!(cx.editor).id);
 
     Ok(())
@@ -376,6 +380,7 @@ fn set_line_ending(
         }),
     );
     doc.apply(&transaction, view.id);
+    doc.append_changes_to_history(view.id);
 
     Ok(())
 }
