@@ -63,7 +63,8 @@ pub fn regex_prompt(
                     doc.set_selection(view.id, snapshot.clone());
                     view.offset = offset_snapshot;
                 }
-                PromptEvent::Update | PromptEvent::Validate => match Regex::new(input) {
+<<<<<<< HEAD
+                PromptEvent::Validate => match Regex::new(input) {
                     Ok(regex) => {
                         let (view, doc) = current_ref!(cx.editor);
 
@@ -94,6 +95,10 @@ pub fn regex_prompt(
 
                 PromptEvent::Update => {
                     // skip empty input, TODO: trigger default
+=======
+                PromptEvent::Update | PromptEvent::Validate => {
+                    // skip empty input
+>>>>>>> helix/master
                     if input.is_empty() {
                         return;
                     }
